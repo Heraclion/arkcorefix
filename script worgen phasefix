@@ -1,0 +1,27 @@
+void Spell::EffectLearnSpell(SpellEffIndex effIndex)
+ {
+ if (effectHandleMode != SPELL_EFFECT_HANDLE_HIT_TARGET)
+ return;
+if (!unitTarget)
+    return;
+
+if (unitTarget->GetTypeId() != TYPEID_PLAYER)
+{
+    if (unitTarget->ToPet())
+        EffectLearnPetSpell(effIndex);
+    return;
+}
+
+Player* player = unitTarget->ToPlayer();
+
+uint32 spellToLearn = (m_spellInfo->Id == 483 || m_spellInfo->Id == 55884) ? damage : m_spellInfo->Effects[effIndex].TriggerSpell;
+player->learnSpell(spellToLearn, false);
+
+// Worgen Phase Fix
+if (m_spellInfo->Id == 1645) // learn worgen form end of quest 14222
+    player->SetPhaseMask(1,true);
+// END Worgen Phase Fix
+
+sLog->outDebug(LOG_FILTER_SPELLS_AURAS, "Spell: Player %u has learned spell %u from NpcGUID=%u", player->GetGUIDLow(), spellToLearn, m_caster->GetGUIDLow());
+
+}
