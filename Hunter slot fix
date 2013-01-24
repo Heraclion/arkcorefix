@@ -1,0 +1,2 @@
+UPDATE characters  SET `currentPetSlot`= 100, `petSlotUsed`=0 WHERE `class` = 3;
+UPDATE character_pet SET `slot` = 100 WHERE `owner` = 1;
